@@ -3,7 +3,15 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
-		"prepare": "husky"
+		"prepare": "husky",
+		"lint-staged": "lint-staged",
+		"lint:js": "nx run-many --target=lint --all",
+		"lint:go": "golangci-lint run ./backend/...",
+		"lint:dart": "flutter analyze ./mobile/ && dart format ./mobile/",
+		"lint:all": "npm run lint:js && npm run lint:go && npm run lint:dart",
+		"format:js": "nx run-many --target=format --all",
+		"affected:lint": "nx affected --target=lint --base=origin/main",
+		"affected:format": "nx affected --target=format --base=origin/main"
 	},
 	"private": true,
 	"devDependencies": {
