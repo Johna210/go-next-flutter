@@ -1,0 +1,111 @@
+# Golden config for golangci-lint v1.59+ (adapted for backend monorepo)
+# Strict but balanced: Enforces best practices without overwhelming noise.
+# Source: Maintainer's gist, updated for 2025 best practices.
+version: "1"
+
+# Run settings: Fast, Go-module aware, skip non-Go dirs.
+run:
+  timeout: 5m # Max time per run
+  modules-download-mode: readonly # No mod downloads in CI
+  build-tags: [] # Add e.g., ["integration"] if needed
+
+# Issues: Control reporting (e.g., max duplicates to reduce noise).
+issues:
+  max-same-issues: 50 # Report up to 50 identical issues
+  max-issues-per-linter: 0 # No per-linter limit (report all)
+  new-from-rev: HEAD~1 # Only new issues since last commit (for PRs)
+
+# Formatters: Auto-fix where possible (imports, lines).
+formatters:
+  enable:
+    - goimports # Formats + adds/removes imports
+    - golines # Wraps long lines
+  settings:
+    goimports:
+      local-prefixes: ["github.com/yourorg/backend"] # Group internal imports
+    golines:
+      max-len: 120 # Line length (stricter than gofmt's 120)
+
+# Linters: Enable core set (60+ for strictness). Customize as needed.
+linters:
+  enable:
+    # Correctness (must-haves)
+    - errcheck # Unchecked errors
+    - govet # Built-in vet
+    - staticcheck # Advanced static analysis
+    - unused # Unused code
+    - ineffassign # Ineffective assignments
+
+    # Style & Best Practices
+    - revive # Golint replacement (configurable rules)
+    - gofmt # Standard formatting
+    - goimports # Import organization
+    - funlen # Long functions
+    - goconst # Repeated strings → constants
+    - godox # TODO/FIXME in comments
+
+    # Security
+    - gosec # Security vulns (e.g., SQL injection)
+    - bodyclose # Unclosed HTTP bodies
+
+    # Performance/Complexity
+    - cyclop # Cyclomatic complexity
+    - gocyclo # Function complexity
+    - gocognit # Cognitive complexity
+    - prealloc # Slice preallocation
+
+    # Custom/Other
+    - depguard # Banned imports (e.g., old deps)
+    - misspell # Typos in comments
+    - whitespace # Trailing whitespace
+    - exportloopref # Loop var export issues
+
+  # Optional: Enable more for ultra-strict (uncomment)
+  # - gocritic      # General critiques
+  # - exhauststruct # All struct fields initialized
+  # - wrapcheck     # Wrapped errors
+
+  # Disable noisy ones
+  disable:
+    - maligned # Too opinionated on structs
+    - scopelint # Replaced by staticcheck
+
+  # Per-linter settings
+  settings:
+    cyclop:
+      max-complexity: 15 # Flag funcs >15 complexity
+      package-average: 10.0 # Avg per package
+    revive:
+      rules: # Custom style rules
+        - name: var-naming
+          severity: warning
+        - name: error-naming
+          severity: error
+        - name: error-strings
+          severity: error
+        - name: blank-imports
+          severity: error
+        - name: context-as-argument
+          severity: error
+        - name: dot-imports
+          severity: error
+        - name: range
+          severity: warning
+        - name: time-naming
+          severity: error
+        - name: unexported-naming
+          severity: warning
+        - name: var-naming
+          severity: warning
+        - name: package-comments
+          severity: warning
+        - name: unnecessary-stmt
+          severity: warning
+        - name: if-return
+          severity: warning
+        - name: increment-decrement
+          severity: warning
+        - name: error-return
+          severity: error
+        - name: blank-imports
+          severity: error

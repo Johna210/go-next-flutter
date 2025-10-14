@@ -1,13 +1,19 @@
 {
-  "name": "@go-next-flutter/source",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {},
-  "private": true,
-  "devDependencies": {
-    "@biomejs/biome": "2.2.6",
-    "@nx/js": "21.6.4",
-    "@nx/workspace": "21.6.4",
-    "nx": "21.6.4"
-  }
+	"name": "@go-next-flutter/source",
+	"version": "0.0.0",
+	"license": "MIT",
+	"scripts": {
+		"prepare": "husky"
+	},
+	"private": true,
+	"devDependencies": {
+		"@biomejs/biome": "2.2.6",
+		"@commitlint/cli": "^20.1.0",
+		"@commitlint/config-conventional": "^20.0.0",
+		"@nx/js": "^21.6.4",
+		"@nx/workspace": "^21.6.4",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.4",
+		"nx": "^21.6.4"
+	}
 }
