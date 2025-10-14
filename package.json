@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "@biomejs/biome": "2.2.6",
     "@nx/js": "21.6.4",
     "@nx/workspace": "21.6.4",
     "nx": "21.6.4"
