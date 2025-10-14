@@ -1,3 +1,9 @@
 {
-	"recommendations": ["nrwl.angular-console", "esbenp.prettier-vscode"]
+	"recommendations": [
+		"biomejs.biome",
+		"nrwl.angular-console",
+		"golang.go",
+		"Dart-Code.flutter",
+		"eamodio.gitlens"
+	]
 }

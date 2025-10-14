@@ -1,0 +1,57 @@
+{
+	"javascript": {
+		"language-servers": [
+			{
+				"name": "biome",
+				"command": "biome-lsp"
+			}
+		],
+		"format-on-save": true,
+		"auto-format": true,
+		"format-command": "biome format --write"
+	},
+	"typescript": {
+		"language-servers": [
+			{
+				"name": "biome",
+				"command": "biome-lsp"
+			}
+		],
+		"format-on-save": true,
+		"auto-format": true,
+		"format-command": "biome format --write"
+	},
+	"json": {
+		"language-servers": [
+			{
+				"name": "biome",
+				"command": "biome-lsp"
+			}
+		],
+		"format-on-save": true,
+		"format-command": "biome format --write"
+	},
+	"go": {
+		"language-servers": [
+			{
+				"name": "gopls",
+				"command": "gopls",
+				"args": ["serve", "--experimental-lsp-diagnostics"]
+			}
+		],
+		"format-on-save": true,
+		"format-command": "goimports -local backend",
+		"linter-command": "golangci-lint run --fast"
+	},
+	"dart": {
+		"language-servers": [
+			{
+				"name": "dartls",
+				"command": "dart language-server"
+			}
+		],
+		"format-on-save": true,
+		"format-command": "dart format",
+		"analyzer-command": "flutter analyze"
+	}
+}

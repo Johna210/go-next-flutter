@@ -1,0 +1,63 @@
+{
+	// Global Editor Settings
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
+	"files.exclude": {
+		"**/node_modules": true,
+		"**/dist": true
+	},
+
+	// Biome for JS/TS/JSON (global formatter/linter)
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"editor.defaultFormatter": "biomejs.biome",
+
+	// Go with golangci-lint
+	"go.lintTool": "golangci-lint",
+	"go.lintFlags": ["--fast"],
+	"go.formatTool": "goimports",
+	"go.useLanguageServer": true,
+	"[go]": {
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		}
+	},
+
+	// Dart/Flutter
+	"dart.formatOnSave": true,
+	"[dart]": {
+		"editor.formatOnSave": true,
+		"editor.selectionHighlight": true,
+		"editor.suggestSelection": "first"
+	},
+	"flutter.previewDartUi": true,
+
+	// Nx Monorepo
+	"nx.console.showStatusBar": true,
+	"nx.console.taskRunOptions.defaultArguments": ["--parallel=3"],
+
+	// pnpm/Husky/Git
+	"npm.packageManager": "pnpm",
+	"git.enableSmartCommit": true,
+	"git.postCommitCommand": "sync",
+
+	// Workspace Exclusions (aligns with biome.json)
+	"search.exclude": {
+		"**/backend": true,
+		"**/mobile": true
+	},
+	"files.watcherExclude": {
+		"**/backend/**": true,
+		"**/mobile/**": true
+	}
+}
