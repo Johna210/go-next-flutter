@@ -21,16 +21,16 @@
 	},
 	"targetDefaults": {
 		"lint": {
-			"executor": "nx:run-commands",
+			"executor": "@nx/workspace:run-commands",
 			"options": {
-				"command": "golangci-lint run --fast",
+				"command": "biome check --apply-unsafe",
 				"cwd": "{projectRoot}"
 			}
 		},
 		"format": {
-			"executor": "nx:run-commands",
+			"executor": "@nx/workspace:run-commands",
 			"options": {
-				"command": "go fmt ./... && golangci-lint run --fix",
+				"command": "biome format --write",
 				"cwd": "{projectRoot}"
 			}
 		},
