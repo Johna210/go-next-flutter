@@ -1,152 +1,152 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
-  "root": true,
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true,
-    "root": ".",
-    "defaultBranch": "main"
-  },
-  "files": {
-    "includes": ["**", "!**/*.test.js", "!test", "!backend", "!mobile"],
-    "ignoreUnknown": false,
-    "experimentalScannerIgnores": ["dist", "node_modules"]
-  },
-  "formatter": {
-    "enabled": true,
-    "includes": ["**/*.js", "**/*.ts", "**/*.json"],
-    "indentStyle": "tab",
-    "formatWithErrors": false,
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "bracketSpacing": true,
-    "bracketSameLine": true
-  },
-  "linter": {
-    "enabled": true,
-    "includes": ["**/*.js", "**/*.ts", "**/*.json"],
-    "rules": {
-      "recommended": true,
-      "a11y": "error",
-      "complexity": "warn",
-      "correctness": "error",
-      "nursery": {
-        "recommended": true
-      },
-      "performance": "warn",
-      "security": "error",
-      "style": "warn",
-      "suspicious": "error"
-    }
-  },
-  "assist": {
-    "enabled": true,
-    "includes": ["**/*.js", "**/*.ts"],
-    "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
-    }
-  },
-  "javascript": {
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": false,
-      "jsxEverywhere": true
-    },
-    "formatter": {
-      "quoteStyle": "double",
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "all",
-      "semicolons": "always",
-      "arrowParentheses": "always",
-      "enabled": true,
-      "indentStyle": "tab",
-      "indentWidth": 2,
-      "lineEnding": "lf",
-      "lineWidth": 80,
-      "bracketSpacing": true,
-      "bracketSameLine": true
-    },
-    "globals": ["globalThis"],
-    "jsxRuntime": "transparent",
-    "linter": {
-      "enabled": true
-    },
-    "assist": {
-      "enabled": true
-    }
-  },
-  "json": {
-    "parser": {
-      "allowComments": false,
-      "allowTrailingCommas": false
-    },
-    "formatter": {
-      "enabled": true,
-      "indentStyle": "tab",
-      "indentWidth": 2,
-      "lineEnding": "lf",
-      "lineWidth": 80,
-      "trailingCommas": "none",
-      "bracketSpacing": true
-    },
-    "linter": {
-      "enabled": true
-    },
-    "assist": {
-      "enabled": true
-    }
-  },
-  "overrides": [
-    {
-      "includes": ["packages/*/src/**"],
-      "linter": {
-        "rules": {
-          "style": "error",
-          "nursery": "off"
-        }
-      },
-      "formatter": {
-        "lineWidth": 100
-      }
-    },
-    {
-      "includes": ["**/*.test.ts", "**/*.test.js"],
-      "linter": {
-        "enabled": true,
-        "rules": {
-          "complexity": "off",
-          "suspicious": "warn"
-        }
-      },
-      "javascript": {
-        "formatter": {
-          "quoteStyle": "single"
-        }
-      }
-    },
-    {
-      "includes": ["generated/**"],
-      "linter": {
-        "enabled": false
-      },
-      "formatter": {
-        "formatWithErrors": true,
-        "indentStyle": "space",
-        "indentWidth": 4
-      }
-    },
-    {
-      "includes": [".vscode/**", "package.json"],
-      "json": {
-        "parser": {
-          "allowComments": true,
-          "allowTrailingCommas": true
-        }
-      }
-    }
-  ]
+	"$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+	"root": true,
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true,
+		"root": ".",
+		"defaultBranch": "main"
+	},
+	"files": {
+		"includes": ["**", "!**/*.test.js", "!test", "!backend", "!mobile"],
+		"ignoreUnknown": false,
+		"experimentalScannerIgnores": ["dist", "node_modules"]
+	},
+	"formatter": {
+		"enabled": true,
+		"includes": ["**/*.js", "**/*.ts", "**/*.json"],
+		"indentStyle": "tab",
+		"formatWithErrors": false,
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 80,
+		"bracketSpacing": true,
+		"bracketSameLine": true
+	},
+	"linter": {
+		"enabled": true,
+		"includes": ["**/*.js", "**/*.ts", "**/*.json"],
+		"rules": {
+			"recommended": true,
+			"a11y": "error",
+			"complexity": "warn",
+			"correctness": "error",
+			"nursery": {
+				"recommended": true
+			},
+			"performance": "warn",
+			"security": "error",
+			"style": "warn",
+			"suspicious": "error"
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"includes": ["**/*.js", "**/*.ts"],
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": false,
+			"jsxEverywhere": true
+		},
+		"formatter": {
+			"quoteStyle": "double",
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"trailingCommas": "all",
+			"semicolons": "always",
+			"arrowParentheses": "always",
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"lineEnding": "lf",
+			"lineWidth": 80,
+			"bracketSpacing": true,
+			"bracketSameLine": true
+		},
+		"globals": ["globalThis"],
+		"jsxRuntime": "transparent",
+		"linter": {
+			"enabled": true
+		},
+		"assist": {
+			"enabled": true
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": false,
+			"allowTrailingCommas": false
+		},
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"lineEnding": "lf",
+			"lineWidth": 80,
+			"trailingCommas": "none",
+			"bracketSpacing": true
+		},
+		"linter": {
+			"enabled": true
+		},
+		"assist": {
+			"enabled": true
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["packages/*/src/**"],
+			"linter": {
+				"rules": {
+					"style": "error",
+					"nursery": "off"
+				}
+			},
+			"formatter": {
+				"lineWidth": 100
+			}
+		},
+		{
+			"includes": ["**/*.test.ts", "**/*.test.js"],
+			"linter": {
+				"enabled": true,
+				"rules": {
+					"complexity": "off",
+					"suspicious": "warn"
+				}
+			},
+			"javascript": {
+				"formatter": {
+					"quoteStyle": "single"
+				}
+			}
+		},
+		{
+			"includes": ["generated/**"],
+			"linter": {
+				"enabled": false
+			},
+			"formatter": {
+				"formatWithErrors": true,
+				"indentStyle": "space",
+				"indentWidth": 4
+			}
+		},
+		{
+			"includes": [".vscode/**", "package.json"],
+			"json": {
+				"parser": {
+					"allowComments": true,
+					"allowTrailingCommas": true
+				}
+			}
+		}
+	]
 }
