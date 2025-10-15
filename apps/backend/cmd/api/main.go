@@ -79,9 +79,6 @@ func main() {
 		if op.Patch != nil {
 			methodOps = append(methodOps, methodOp{"PATCH", op.Patch})
 		}
-		if op.Trace != nil {
-			methodOps = append(methodOps, methodOp{"TRACE", op.Trace})
-		}
 
 		for _, mo := range methodOps {
 			log.Printf("  %s %s - %s", mo.name, path, mo.op.Summary)

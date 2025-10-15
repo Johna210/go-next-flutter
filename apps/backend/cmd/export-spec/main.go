@@ -17,6 +17,8 @@ func main() {
 	userUseCase := usecase.NewUserUseCase(userRepo)
 	userHandler := handler.NewUserHandler(userUseCase)
 
+	log.Println("Perparing spec...")
+
 	// Setup router to get API spec
 	_, api := http.SetupRouter(userHandler)
 
