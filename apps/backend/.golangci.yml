@@ -1,13 +1,13 @@
 # Golden config for golangci-lint v1.59+ (adapted for backend monorepo)
 # Strict but balanced: Enforces best practices without overwhelming noise.
 # Source: Maintainer's gist, updated for 2025 best practices.
-version: "1"
+version: "2"
 
 # Run settings: Fast, Go-module aware, skip non-Go dirs.
 run:
   timeout: 5m # Max time per run
   modules-download-mode: readonly # No mod downloads in CI
-  build-tags: [] # Add e.g., ["integration"] if needed
+  build-tags: [] # Add build tags if needed
 
 # Issues: Control reporting (e.g., max duplicates to reduce noise).
 issues:
@@ -22,9 +22,9 @@ formatters:
     - golines # Wraps long lines
   settings:
     goimports:
-      local-prefixes: ["github.com/yourorg/backend"] # Group internal imports
+      local-prefixes: ["github.com/johna210/go-next-flutter"] # Group internal imports
     golines:
-      max-len: 120 # Line length (stricter than gofmt's 120)
+      max-len: 120 # Line length (stricter than gofmt default)
 
 # Linters: Enable core set (60+ for strictness). Customize as needed.
 linters:
@@ -38,14 +38,12 @@ linters:
 
     # Style & Best Practices
     - revive # Golint replacement (configurable rules)
-    - gofmt # Standard formatting
-    - goimports # Import organization
     - funlen # Long functions
     - goconst # Repeated strings → constants
     - godox # TODO/FIXME in comments
 
     # Security
-    - gosec # Security vulns (e.g., SQL injection)
+    - gosec # Security vulnerabilities (e.g., SQL injection)
     - bodyclose # Unclosed HTTP bodies
 
     # Performance/Complexity
@@ -55,25 +53,23 @@ linters:
     - prealloc # Slice preallocation
 
     # Custom/Other
-    - depguard # Banned imports (e.g., old deps)
+    - depguard # Banned imports (e.g., old dependencies)
     - misspell # Typos in comments
     - whitespace # Trailing whitespace
-    - exportloopref # Loop var export issues
+    - copyloopvar # Replaces exportloopref: Checks loop var copies
 
-  # Optional: Enable more for ultra-strict (uncomment)
-  # - gocritic      # General critiques
-  # - exhauststruct # All struct fields initialized
-  # - wrapcheck     # Wrapped errors
+    # Optional: Enable more for ultra-strict (uncomment)
+    # - gocritic      # General critiques
+    # - exhauststruct # All struct fields initialized
+    # - wrapcheck     # Wrapped errors
 
-  # Disable noisy ones
-  disable:
-    - maligned # Too opinionated on structs
-    - scopelint # Replaced by staticcheck
+  # Disable noisy ones (removed deprecated entries)
+  disable: []
 
   # Per-linter settings
   settings:
     cyclop:
-      max-complexity: 15 # Flag funcs >15 complexity
+      max-complexity: 15 # Flag functions >15 complexity
       package-average: 10.0 # Avg per package
     revive:
       rules: # Custom style rules
@@ -95,8 +91,6 @@ linters:
           severity: error
         - name: unexported-naming
           severity: warning
-        - name: var-naming
-          severity: warning
         - name: package-comments
           severity: warning
         - name: unnecessary-stmt
@@ -106,6 +100,4 @@ linters:
         - name: increment-decrement
           severity: warning
         - name: error-return
-          severity: error
-        - name: blank-imports
           severity: error

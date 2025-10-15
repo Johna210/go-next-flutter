@@ -1,5 +1,7 @@
 {
 	"*.{js,jsx,ts,tsx,json}": ["biome check --write ."],
-	"*.go": ["golangci-lint run --fast"],
+	"*.go": [
+		"sh -c 'go list -f \"{{.Dir}}\" ${*} | uniq | xargs -I {} golangci-lint run --path {}'"
+	],
 	"*.dart": ["flutter analyze", "dart format"]
 }

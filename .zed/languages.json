@@ -41,7 +41,7 @@
 		],
 		"format-on-save": true,
 		"format-command": "goimports -local backend",
-		"linter-command": "golangci-lint run --fast"
+		"linter-command": "golangci-lint run"
 	},
 	"dart": {
 		"language-servers": [
