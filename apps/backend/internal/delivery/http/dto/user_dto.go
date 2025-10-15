@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
 	"github.com/johna210/go-next-flutter/internal/domain"
 )
 
@@ -34,8 +35,8 @@ type DeleteUserRequest struct {
 }
 
 type ListUsersRequest struct {
-	Limit  int `query:"limit" minimum:"1" maximum:"100" default:"10" doc:"Number of users to return"`
-	Offset int `query:"offset" minimum:"0" default:"0" doc:"Number of users to skip"`
+	Limit  int `query:"limit"  minimum:"1" maximum:"100" default:"10" doc:"Number of users to return"`
+	Offset int `query:"offset" minimum:"0"               default:"0"  doc:"Number of users to skip"`
 }
 
 type UserResponse struct {

@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
+
 	"github.com/johna210/go-next-flutter/internal/domain"
 )
 
