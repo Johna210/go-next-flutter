@@ -1,0 +1,13 @@
+{
+	"name": "@go-next-flutter/typescript-sdk",
+	"version": "1.0.0",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"dependencies": {
+		"@tanstack/react-query": "^5.90.3",
+		"openapi-fetch": "^0.9.0"
+	},
+	"devDependencies": {
+		"openapi-typescript": "^6.7.0"
+	}
+}

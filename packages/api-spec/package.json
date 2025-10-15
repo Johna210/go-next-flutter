@@ -1,0 +1,5 @@
+{
+	"name": "@go-next-flutter/api-spec",
+	"version": "1.0.0",
+	"main": "openapi.json"
+}

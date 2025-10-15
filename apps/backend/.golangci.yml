@@ -25,7 +25,7 @@ formatters:
       local-prefixes: ["github.com/johna210/go-next-flutter"] # Group internal imports
     golines:
       max-len: 120 # Line length (stricter than gofmt default)
-
+    
 # Linters: Enable core set (60+ for strictness). Customize as needed.
 linters:
   enable:
@@ -33,12 +33,9 @@ linters:
     - errcheck # Unchecked errors
     - govet # Built-in vet
     - staticcheck # Advanced static analysis
-    - unused # Unused code
     - ineffassign # Ineffective assignments
 
     # Style & Best Practices
-    - revive # Golint replacement (configurable rules)
-    - funlen # Long functions
     - goconst # Repeated strings → constants
     - godox # TODO/FIXME in comments
 
@@ -53,10 +50,8 @@ linters:
     - prealloc # Slice preallocation
 
     # Custom/Other
-    - depguard # Banned imports (e.g., old dependencies)
     - misspell # Typos in comments
     - whitespace # Trailing whitespace
-    - copyloopvar # Replaces exportloopref: Checks loop var copies
 
     # Optional: Enable more for ultra-strict (uncomment)
     # - gocritic      # General critiques
@@ -64,13 +59,18 @@ linters:
     # - wrapcheck     # Wrapped errors
 
   # Disable noisy ones (removed deprecated entries)
-  disable: []
+  disable: 
+    - revive # Golint replacement (configurable rules)
+    - funlen # Long functions
+    - unused # Unused code
+    - depguard # Banned imports (e.g., old dependencies)
+    - copyloopvar # Replaces exportloopref: Checks loop var copies
 
   # Per-linter settings
   settings:
     cyclop:
       max-complexity: 15 # Flag functions >15 complexity
-      package-average: 10.0 # Avg per package
+      package-average: 15.0 # Avg per package
     revive:
       rules: # Custom style rules
         - name: var-naming

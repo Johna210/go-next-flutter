@@ -1,0 +1,47 @@
+{
+	"name": "typescript-sdk",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "packages/typescript-sdk/src",
+	"projectType": "library",
+	"targets": {
+		"generate-types": {
+			"executor": "nx:run-commands",
+			"dependsOn": ["api-spec:generate"],
+			"options": {
+				"commands": [
+					"openapi-typescript ../../packages/api-spec/openapi.json -o src/types.ts",
+					"biome format --write src/types.ts"
+				],
+				"cwd": "packages/typescript-sdk",
+				"parallel": false
+			},
+			"outputs": ["{projectRoot}/src/types.ts"]
+		},
+		"build": {
+			"executor": "@nx/js:tsc",
+			"dependsOn": ["generate-types"],
+			"outputs": ["{workspaceRoot}/dist/packages/typescript-sdk"],
+			"options": {
+				"outputPath": "dist/packages/typescript-sdk",
+				"main": "packages/typescript-sdk/src/index.ts",
+				"tsConfig": "packages/typescript-sdk/tsconfig.lib.json",
+				"assets": []
+			}
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "biome check --write",
+				"cwd": "packages/typescript-sdk"
+			}
+		},
+		"format": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "biome format --write",
+				"cwd": "packages/typescript-sdk"
+			}
+		}
+	},
+	"tags": ["type:lib", "lang:typescript"]
+}

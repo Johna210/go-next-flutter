@@ -7,6 +7,7 @@ import (
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 	"github.com/johna210/go-next-flutter/internal/config"
 	"github.com/johna210/go-next-flutter/internal/delivery/http"
 	"github.com/johna210/go-next-flutter/internal/delivery/http/handler"
@@ -31,7 +32,7 @@ func main() {
 
 	// Add CORS middleware to router (before any routes)
 	corsMiddleware := cors.New(cors.Config{
-		AllowOrigins:     []string{"*"}, // For dev; restrict in prod (e.g., []string{"http://localhost:3000"})
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

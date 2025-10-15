@@ -28,9 +28,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to marshal OpenAPI spec: %v", err)
 	}
-
-	outputPath := "../../api-spec/openapi.json"
-	if err := os.WriteFile(outputPath, data, 0644); err != nil {
+	outputPath := "../../packages/api-spec/openapi.json"
+	if err := os.WriteFile(outputPath, data, 0600); err != nil {
 		log.Fatalf("Failed to write OpenAPI spec: %v", err)
 	}
 
