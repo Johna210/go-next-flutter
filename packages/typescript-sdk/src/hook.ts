@@ -68,4 +68,26 @@ export function useCreateUser() {
 	});
 }
 
+export function useDeleteUser(userId: string) {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async () => {
+			const { data, error } = await api.DELETE("/api/v1/users/{id}", {
+				params: { path: { id: userId } },
+			});
+			if (error) {
+				throw new Error(error.title);
+			}
+			return data;
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: queryKeys.users.lists() });
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.users.detail(userId),
+			});
+		},
+	});
+}
+
 export { api };
