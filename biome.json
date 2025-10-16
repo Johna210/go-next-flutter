@@ -102,6 +102,12 @@
 	},
 	"overrides": [
 		{
+			"includes": ["packages/typescript-sdk/src/types.ts"],
+			"linter": {
+				"enabled": false
+			}
+		},
+		{
 			"includes": ["packages/*/src/**"],
 			"linter": {
 				"rules": {
