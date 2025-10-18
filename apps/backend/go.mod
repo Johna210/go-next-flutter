@@ -1,6 +1,6 @@
 module github.com/johna210/go-next-flutter
 
-go 1.23.4
+go 1.25.3
 
 require (
 	github.com/danielgtaylor/huma/v2 v2.34.1
