@@ -42,6 +42,7 @@
 		},
 		"export-openapi": {
 			"executor": "nx:run-commands",
+			"cache": true,
 			"options": {
 				"command": "go run cmd/export-spec/main.go",
 				"cwd": "apps/backend"

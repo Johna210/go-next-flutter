@@ -1,0 +1,7 @@
+{
+	"language_overrides": {
+		"TypeScript": { "formatter": "biome", "format_on_save": "on" },
+		"JavaScript": { "formatter": "biome", "format_on_save": "on" },
+		"Json": { "formatter": "biome", "format_on_save": "on" }
+	}
+}
