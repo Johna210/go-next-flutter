@@ -256,7 +256,7 @@ func decodeWhereItem(encoded string) Where {
 	parts := strings.Split(encoded, string(WhereEqual))
 	return Where{
 		Column:   parts[0],
-		Operator: FilterOperator(parts[1]),
+		Operator: FilterOperators(parts[1]),
 		Value:    parts[2],
 	}
 }

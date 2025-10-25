@@ -122,7 +122,7 @@ type Where struct {
 
 	// Operator is the comparison operator to use for the filter.
 	// This field is required.
-	Operator FilterOperator `json:"operator" validate:"required,valid_filter_operator"`
+	Operator FilterOperators `json:"operator" validate:"required,valid_filter_operator"`
 
 	// Value is the value to compare the column against.
 	// This field is required.
@@ -140,6 +140,6 @@ type IncludeSelect struct {
 }
 
 type CollectionResult[T any] struct {
-	Total int64
-	Items []*T
+	Total int64 `json:"total"`
+	Items []*T  `json:"items"`
 }
