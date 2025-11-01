@@ -3,11 +3,13 @@ package repository
 import (
 	"context"
 	"errors"
+	"math"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
 	"github.com/johna210/go-next-flutter/internal/core"
+	collectionquery "github.com/johna210/go-next-flutter/pkg/collection_query"
 )
 
 var (
@@ -79,35 +81,115 @@ func (r *BaseRepository[T]) HardDelete(ctx context.Context, id uuid.UUID) error 
 	return nil
 }
 
-func (r *BaseRepository[T]) FindAll(ctx context.Context, page, pageSize int) ([]*T, int64, error) {
-	if page < 1 {
-		page = 1
+func (r *BaseRepository[T]) FindAll(ctx context.Context, query collectionquery.CollectionQuery) PaginatedResult[T] {
+	const defaultPageSize = 10
+	const defaultSkip = 0
+
+	pageSize := defaultPageSize
+	if query.Take != nil && *query.Take > 0 {
+		pageSize = *query.Take
 	}
 
-	if pageSize < 1 {
-		pageSize = 10
+	skip := defaultSkip
+	if query.Skip != nil && *query.Skip >= 0 {
+		skip = *query.Skip
 	}
 
-	if pageSize > 100 {
-		pageSize = 100
+	qc := collectionquery.QueryConstructor[T]{}
+
+	result, err := qc.Find(r.db.WithContext(ctx), query, false)
+	if err != nil {
+		r.logger.Error("Failed to find all entities", core.Error(err))
+		return PaginatedResult[T]{}
 	}
 
-	var entities []*T
-	var total int64
-
-	// Count total
-	if err := r.db.WithContext(ctx).Model(new(T)).Count(&total).Error; err != nil {
-		r.logger.Error("Failed to count entities", core.Error(err))
-		return nil, 0, err
+	if result.Total == 0 {
+		return PaginatedResult[T]{
+			Total:      0,
+			Data:       result.Items,
+			Page:       1,
+			PageSize:   pageSize,
+			TotalPages: 0,
+		}
 	}
 
-	offset := (page - 1) * pageSize
-	if err := r.db.WithContext(ctx).Offset(offset).Limit(pageSize).Find(&entities).Error; err != nil {
-		r.logger.Error("Failed to find entities", core.Error(err))
-		return nil, 0, err
+	var totalPages int
+	if pageSize > 0 {
+		totalPages = int(math.Ceil(float64(result.Total) / float64(pageSize)))
 	}
 
-	return entities, total, nil
+	currentPage := (skip / pageSize) + 1
+
+	return PaginatedResult[T]{
+		Total:      result.Total,
+		Data:       result.Items,
+		Page:       currentPage,
+		PageSize:   pageSize,
+		TotalPages: totalPages,
+	}
+}
+
+func (r *BaseRepository[T]) FindAllArchived(
+	ctx context.Context,
+	query collectionquery.CollectionQuery,
+) PaginatedResult[T] {
+	query.Where = append(query.Where, []collectionquery.Where{
+		{
+			Column:   "deletedAt",
+			Value:    "",
+			Operator: collectionquery.IsNotNull,
+		},
+	})
+
+	const defaultPageSize = 10
+	const defaultSkip = 0
+
+	pageSize := defaultPageSize
+	if query.Take != nil && *query.Take > 0 {
+		pageSize = *query.Take
+	}
+
+	skip := defaultSkip
+	if query.Skip != nil && *query.Skip >= 0 {
+		skip = *query.Skip
+	}
+
+	qc := collectionquery.QueryConstructor[T]{}
+	result, err := qc.Find(r.db.WithContext(ctx), query, true)
+	if err != nil {
+		r.logger.Error("Failed to find all entities", core.Error(err))
+		return PaginatedResult[T]{}
+	}
+
+	if err != nil {
+		r.logger.Error("Failed to find all entities", core.Error(err))
+		return PaginatedResult[T]{}
+	}
+
+	if result.Total == 0 {
+		return PaginatedResult[T]{
+			Total:      0,
+			Data:       result.Items,
+			Page:       1,
+			PageSize:   pageSize,
+			TotalPages: 0,
+		}
+	}
+
+	var totalPages int
+	if pageSize > 0 {
+		totalPages = int(math.Ceil(float64(result.Total) / float64(pageSize)))
+	}
+
+	currentPage := (skip / pageSize) + 1
+
+	return PaginatedResult[T]{
+		Total:      result.Total,
+		Data:       result.Items,
+		Page:       currentPage,
+		PageSize:   pageSize,
+		TotalPages: totalPages,
+	}
 }
 
 func (r *BaseRepository[T]) FindByIDs(ctx context.Context, ids []uuid.UUID) ([]*T, error) {

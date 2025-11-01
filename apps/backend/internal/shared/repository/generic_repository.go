@@ -5,6 +5,8 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+
+	collectionquery "github.com/johna210/go-next-flutter/pkg/collection_query"
 )
 
 // GenericRepository defines common CRUD operations
@@ -28,7 +30,10 @@ type GenericRepository[T any] interface {
 	HardDelete(ctx context.Context, id uuid.UUID) error
 
 	// FindAll retrieves all entities with pagination
-	FindAll(ctx context.Context, page, pageSize int) ([]*T, int64, error)
+	FindAll(ctx context.Context, query collectionquery.CollectionQuery) PaginatedResult[T]
+
+	// FindAllArchived retrieves all archived (soft deleted) entities with pagination
+	FindAllArchived(ctx context.Context, query collectionquery.CollectionQuery) PaginatedResult[T]
 
 	// FindByIDs retrieves multiple entities by IDs
 	FindByIDs(ctx context.Context, ids []uuid.UUID) ([]*T, error)
