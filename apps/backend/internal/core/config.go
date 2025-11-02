@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+
+	"github.com/johna210/go-next-flutter/pkg/utils"
 )
 
 func NewConfig() (*Config, error) {
@@ -62,6 +64,23 @@ func (c *Config) Validate() error {
 	if c.Database.DBName == "" {
 		return fmt.Errorf("database.dbname is required")
 	}
+
+	// Validate App.Environment (used directly in exec.Command)
+	if err := utils.IsSafeString(c.App.Environment); err != nil {
+		return fmt.Errorf("invalid app.environment: %w", err)
+	}
+
+	// Validate DSN components (used in GetDSN, which is then used in exec.Command)
+	if err := utils.IsSafeDSNComponent(c.Database.Host); err != nil {
+		return fmt.Errorf("invalid database.host: %w", err)
+	}
+	if err := utils.IsSafeString(c.Database.DBName); err != nil {
+		return fmt.Errorf("invalid database.dbname: %w", err)
+	}
+	if err := utils.IsSafeString(c.Database.SSLMode); err != nil {
+		return fmt.Errorf("invalid database.sslmode: %w", err)
+	}
+
 	return nil
 }
 

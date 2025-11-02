@@ -67,9 +67,3 @@ type PaginatedResult[T any] struct {
 	PageSize   int   `json:"page_size"`
 	TotalPages int   `json:"total_pages"`
 }
-
-type Filter struct {
-	Field    string
-	Operator string
-	Value    interface{}
-}

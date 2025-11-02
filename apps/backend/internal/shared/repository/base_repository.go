@@ -161,11 +161,6 @@ func (r *BaseRepository[T]) FindAllArchived(
 		return PaginatedResult[T]{}
 	}
 
-	if err != nil {
-		r.logger.Error("Failed to find all entities", core.Error(err))
-		return PaginatedResult[T]{}
-	}
-
 	if result.Total == 0 {
 		return PaginatedResult[T]{
 			Total:      0,

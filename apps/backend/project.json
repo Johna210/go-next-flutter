@@ -19,6 +19,13 @@
 				"cwd": "apps/backend"
 			}
 		},
+		"dev": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "air",
+				"cwd": "apps/backend"
+			}
+		},
 		"test": {
 			"executor": "nx:run-commands",
 			"options": {
@@ -48,6 +55,18 @@
 				"cwd": "apps/backend"
 			},
 			"outputs": ["{workspaceRoot}/packages/api-spec/openapi.json"]
+		},
+		"migration:generate": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/backend"
+			}
+		},
+		"migration:apply": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/backend"
+			}
 		}
 	},
 	"tags": ["type:app", "lang:go", "scope:backend"]
