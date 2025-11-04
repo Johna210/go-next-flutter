@@ -1,4 +1,4 @@
-package domain
+package entity
 
 import (
 	"time"
@@ -20,4 +20,8 @@ type UserProfile struct {
 	DateOfBirth *time.Time
 
 	User *User `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+}
+
+func (UserProfile) TableName() string {
+	return "user_profiles"
 }

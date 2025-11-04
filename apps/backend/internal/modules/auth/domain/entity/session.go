@@ -1,4 +1,4 @@
-package domain
+package entity
 
 import (
 	"time"
@@ -18,4 +18,8 @@ type Session struct {
 	Revoked      bool      `gorm:"default:false"`
 	IPAddress    string
 	UserAgent    string
+}
+
+func (Session) TableName() string {
+	return "sessions"
 }

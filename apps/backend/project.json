@@ -56,15 +56,24 @@
 			},
 			"outputs": ["{workspaceRoot}/packages/api-spec/openapi.json"]
 		},
+		"migration:list": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "go run ./cmd/schema -action=list",
+				"cwd": "apps/backend"
+			}
+		},
 		"migration:generate": {
 			"executor": "nx:run-commands",
 			"options": {
+				"command": "go run ./cmd/schema -action=generate -name=${args.name}",
 				"cwd": "apps/backend"
 			}
 		},
 		"migration:apply": {
 			"executor": "nx:run-commands",
 			"options": {
+				"command": "go run ./cmd/schema -action=apply",
 				"cwd": "apps/backend"
 			}
 		}

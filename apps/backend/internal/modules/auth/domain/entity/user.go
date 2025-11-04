@@ -1,4 +1,4 @@
-package domain
+package entity
 
 import "github.com/johna210/go-next-flutter/internal/shared/model"
 
@@ -12,4 +12,8 @@ type User struct {
 
 	Profile UserProfile `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Roles   []UserRole  `gorm:"foreignKey:UserID"`
+}
+
+func (User) TableName() string {
+	return "users"
 }

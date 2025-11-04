@@ -1,4 +1,4 @@
-package domain
+package entity
 
 import "github.com/johna210/go-next-flutter/internal/shared/model"
 
