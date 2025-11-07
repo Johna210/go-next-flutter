@@ -24,7 +24,8 @@
 			"options": {
 				"command": "air",
 				"cwd": "apps/backend"
-			}
+			},
+			"cache": false
 		},
 		"test": {
 			"executor": "nx:run-commands",
@@ -66,7 +67,7 @@
 		"migration:generate": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "go run ./cmd/schema -action=generate -name=${args.name}",
+				"command": "go run cmd/schema/main.go -action=generate -name={args.name}",
 				"cwd": "apps/backend"
 			}
 		},
@@ -75,6 +76,23 @@
 			"options": {
 				"command": "go run ./cmd/schema -action=apply",
 				"cwd": "apps/backend"
+			}
+		},
+		"migration:debug": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"pwd",
+					"echo 'Looking for backend directory...'",
+					"find . -name 'cmd' -type d -print 2>/dev/null",
+					"find . -name 'schema' -type d -print 2>/dev/null",
+					"echo 'Common backend locations:'",
+					"ls -la apps/ 2>/dev/null || echo 'No apps directory'",
+					"ls -la packages/ 2>/dev/null || echo 'No packages directory'",
+					"ls -la services/ 2>/dev/null || echo 'No services directory'"
+				],
+				"parallel": false,
+				"cwd": "."
 			}
 		}
 	},

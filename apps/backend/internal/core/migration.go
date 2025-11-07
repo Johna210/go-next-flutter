@@ -9,8 +9,7 @@ func ApplyMigrations(cfg *Config, sm *SchemaManager) error {
 	// nolint:gosec // G204: Arguments are derived from validated application configuration, not untrusted user input.
 	cmd := exec.Command("atlas", "migrate", "apply",
 		"--dir", "file://migrations",
-		"--env", cfg.App.Environment,
-		"--url", cfg.GetDSN(),
+		"--url", cfg.GetDatabaseUrl(),
 	)
 
 	output, err := cmd.CombinedOutput()

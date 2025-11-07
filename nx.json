@@ -14,11 +14,12 @@
 		"default": {
 			"runner": "@nx/tasks-runners/default",
 			"options": {
-				"cacheableOperations": ["lint", "format"],
+				"cacheableOperations": ["lint", "format", "build", "test"],
 				"cacheDirectory": ".nx/cache"
 			}
 		}
 	},
+	"neverConnectToCloud": true,
 	"targetDefaults": {
 		"lint": {
 			"executor": "nx:run-commands",

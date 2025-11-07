@@ -12,7 +12,7 @@ func NewLogger(cfg *Config) (Logger, error) {
 	var zapConfig zap.Config
 
 	// Use preset configs based on the environment
-	if cfg.IsDevelopment() {
+	if cfg.IsDevelopment() || cfg.IsLocal() {
 		zapConfig = zap.NewDevelopmentConfig()
 		zapConfig.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	} else {
@@ -24,6 +24,8 @@ func NewLogger(cfg *Config) (Logger, error) {
 	zapConfig.Encoding = cfg.Logger.Encoding
 	zapConfig.OutputPaths = cfg.Logger.OutputPaths
 	zapConfig.ErrorOutputPaths = cfg.Logger.ErrorOutputPaths
+	zapConfig.EncoderConfig.TimeKey = "timestamp"
+	zapConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 
 	// Build the logger
 	zapLog, err := zapConfig.Build(

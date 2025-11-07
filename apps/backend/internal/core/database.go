@@ -33,7 +33,7 @@ func (b *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
 func NewDatabase(cfg *Config, log Logger) (*Database, error) {
 	log.Info("Connecting to database with GORM",
 		String("host", cfg.Database.Host),
-		Int("port", cfg.Database.Port),
+		Int("port", int(cfg.Database.Port)),
 		String("database", cfg.Database.DBName),
 	)
 
@@ -69,8 +69,8 @@ func NewDatabase(cfg *Config, log Logger) (*Database, error) {
 	}
 
 	// Configure connection pool
-	sqlDB.SetMaxOpenConns(cfg.Database.MaxOpenConns)
-	sqlDB.SetMaxIdleConns(cfg.Database.MaxIdleConns)
+	sqlDB.SetMaxOpenConns(int(cfg.Database.MaxOpenConns))
+	sqlDB.SetMaxIdleConns(int(cfg.Database.MaxIdleConns))
 	sqlDB.SetConnMaxLifetime(cfg.Database.ConnMaxLifetime)
 
 	// Ping to verify connection

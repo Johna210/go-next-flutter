@@ -16,41 +16,43 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Name        string `mapstructure:"name"`
-	Environment string `mapstructure:"environment"`
-	Version     string `mapstructure:"version"`
-	Port        int    `mapstructure:"port"`
+	Name        string `mapstructure:"name"        validate:"required"`
+	Environment string `mapstructure:"environment" validate:"required,oneof=development production testing local"`
+	Version     string `mapstructure:"version"     validate:"required"`
+	Port        int    `mapstructure:"port"        validate:"required,gt=0,lte=65535"`
 	Debug       bool   `mapstructure:"debug"`
 }
 type DatabaseConfig struct {
-	Host            string        `mapstructure:"host"`
-	Port            int           `mapstructure:"port"`
+	Type            string        `mapstructure:"type"              validate:"required,oneof=postgres postgresql mysql sqlserver"`
+	Host            string        `mapstructure:"host"              validate:"required,hostname|ip"`
+	Port            int           `mapstructure:"port"              validate:"required,gt=0,lte=65535"`
 	User            string        `mapstructure:"user"`
 	Password        string        `mapstructure:"password"`
 	DBName          string        `mapstructure:"dbname"`
-	SSLMode         string        `mapstructure:"sslmode"`
-	MaxOpenConns    int           `mapstructure:"max_open_conns"`
-	MaxIdleConns    int           `mapstructure:"max_idle_conns"`
-	ConnMaxLifetime time.Duration `mapstructure:"conn_max_lifetime"`
+	SSLMode         string        `mapstructure:"sslmode"           validate:"required,oneof=disable require verify-full verify-ca"`
+	MaxOpenConns    int           `mapstructure:"max_open_conns"    validate:"gt=0"`
+	MaxIdleConns    int           `mapstructure:"max_idle_conns"    validate:"gt=0"`
+	ConnMaxLifetime time.Duration `mapstructure:"conn_max_lifetime" validate:"gt=0"`
 }
 type CacheConfig struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	Password string `mapstructure:"password"`
-	DB       int    `mapstructure:"db"`
-	PoolSize int    `mapstructure:"pool_size"`
+	Enabled  bool   `mapstructure:"enabled"`
+	Host     string `mapstructure:"host"      validate:"required_if=Enabled true,hostname|ip"`
+	Port     int    `mapstructure:"port"      validate:"required_if=Enabled true,gt=0,lte=65535"`
+	Password string `mapstructure:"password"  validate:"required_if=Enabled true"`
+	DB       int    `mapstructure:"db"        validate:"gte=0"`
+	PoolSize int    `mapstructure:"pool_size" validate:"required_if=Enabled true,gt=0"`
 }
 type LoggerConfig struct {
-	Level            string   `mapstructure:"level"`
-	Encoding         string   `mapstructure:"encoding"`
+	Level            string   `mapstructure:"level"              validate:"required,oneof=debug info warn error"`
+	Encoding         string   `mapstructure:"encoding"           validate:"required,oneof=json console"`
 	OutputPaths      []string `mapstructure:"output_paths"`
 	ErrorOutputPaths []string `mapstructure:"error_output_paths"`
 }
 type ServerConfig struct {
-	ReadTimeout     time.Duration `mapstructure:"read_timeout"`
-	WriteTimeout    time.Duration `mapstructure:"write_timeout"`
-	IdleTimeout     time.Duration `mapstructure:"idle_timeout"`
-	ShutdownTimeout time.Duration `mapstructure:"shutdown_timeout"`
+	ReadTimeout     time.Duration `mapstructure:"read_timeout"     validate:"gt=0"`
+	WriteTimeout    time.Duration `mapstructure:"write_timeout"    validate:"gt=0"`
+	IdleTimeout     time.Duration `mapstructure:"idle_timeout"     validate:"gt=0"`
+	ShutdownTimeout time.Duration `mapstructure:"shutdown_timeout" validate:"gt=0"`
 }
 
 type Logger interface {
