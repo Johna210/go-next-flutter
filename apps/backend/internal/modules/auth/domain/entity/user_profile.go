@@ -9,7 +9,7 @@ import (
 )
 
 type UserProfile struct {
-	model.BaseModel
+	model.BaseModel `gorm:"embedded"`
 
 	UserID      uuid.UUID `gorm:"type:uuid;uniqueIndex;not null"`
 	FirstName   string

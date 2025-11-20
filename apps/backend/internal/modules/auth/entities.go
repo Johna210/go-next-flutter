@@ -1,7 +1,8 @@
-package entity
+package auth
 
 import (
 	"github.com/johna210/go-next-flutter/internal/core"
+	"github.com/johna210/go-next-flutter/internal/modules/auth/domain/entity"
 )
 
 // EntityProvider implements core.EntityProvider for auth module
@@ -15,13 +16,13 @@ func NewEntityProvider() core.EntityProvider {
 // Entities returns all domain entities for auth module
 func (p *EntityProvider) Entities() []interface{} {
 	return []interface{}{
-		&User{},
-		&UserProfile{},
-		&Session{},
-		&Role{},
-		&Permission{},
-		&RolePermission{},
-		&UserRole{},
+		&entity.User{},
+		&entity.UserProfile{},
+		&entity.Session{},
+		&entity.Role{},
+		&entity.Permission{},
+		&entity.RolePermission{},
+		&entity.UserRole{},
 	}
 }
 

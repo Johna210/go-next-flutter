@@ -2,7 +2,10 @@ package core
 
 import (
 	"fmt"
+	"io"
 	"sync"
+
+	"ariga.io/atlas-provider-gorm/gormschema"
 )
 
 // EntityProvider defines the interface for modules to provide their entities
@@ -89,4 +92,40 @@ func (sm *SchemaManager) GetModuleInfo() map[string]int {
 	}
 
 	return info
+}
+
+// LoadGORMSchema loads all entities  and outputs Atlas HCL schema
+func (sm *SchemaManager) LoadGORMSchema(writer io.Writer, cfg *Config, db *Database) error {
+	fmt.Println("Loading gorm models started")
+
+	entities := sm.GetAllEntities()
+
+	if len(entities) == 0 {
+		return fmt.Errorf("no entities registered")
+	}
+
+	// Use the actual database connection to introspect schema
+	// Note: AutoMigrate will create tables/columns if they don't exist
+	// but won't delete existing ones - it's generally safe
+	if err := db.AutoMigrate(entities...); err != nil {
+		return fmt.Errorf("failed to analyze entities: %w", err)
+	}
+
+	var driverName string
+	switch cfg.Database.Type {
+	case "postgres", "postgresql":
+		driverName = "postgres"
+	case "mysql":
+		driverName = "mysql"
+	default:
+		return fmt.Errorf("unsupported database type: %s", cfg.Database.Type)
+	}
+
+	// Convert GORM schema to Atlas HCL format
+	// Pass the underlying gorm.DB (not the Database wrapper)
+	if _, err := gormschema.New(driverName).Load(db.DB, writer); err != nil {
+		return fmt.Errorf("failed to convert schema to Atlas format: %w", err)
+	}
+
+	return nil
 }

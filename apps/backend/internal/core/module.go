@@ -2,7 +2,6 @@ package core
 
 import (
 	"context"
-	"fmt"
 
 	"go.uber.org/fx"
 )
@@ -13,6 +12,7 @@ var Module = fx.Module("core",
 		NewLogger,
 		NewDatabase,
 		NewSchemaManager,
+		NewMigrator,
 	),
 	fx.Invoke(registerLifecycleHooks),
 )
@@ -23,6 +23,7 @@ func registerLifecycleHooks(
 	log Logger,
 	db *Database,
 	sm *SchemaManager,
+	m *Migrator,
 ) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
@@ -36,18 +37,18 @@ func registerLifecycleHooks(
 			}
 
 			// RunMigrations - applies all migrations on startup
-			log.Info("Applying database migrations...")
-			log.Info("Managing",
-				Int("entities", len(sm.GetAllEntities())),
-				Int("modules", len(sm.ListModules())),
-			)
+			// log.Info("Applying database migrations...")
+			// log.Info("Managing",
+			// 	Int("entities", len(sm.GetAllEntities())),
+			// 	Int("modules", len(sm.ListModules())),
+			// )
 
-			if err := ApplyMigrations(cfg, sm); err != nil {
-				return fmt.Errorf("migration failed: %w", err)
-			}
-			log.Info("Migrations applied successfully")
+			// if err := m.applyMigrations(); err != nil {
+			// 	return fmt.Errorf("migration failed: %w", err)
+			// }
+			// log.Info("Migrations applied successfully")
 
-			log.Info("Core Module started successfully")
+			// log.Info("Core Module started successfully")
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

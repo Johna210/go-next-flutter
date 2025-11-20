@@ -3,7 +3,7 @@ package entity
 import "github.com/johna210/go-next-flutter/internal/shared/model"
 
 type User struct {
-	model.BaseModel
+	model.BaseModel `gorm:"embedded"`
 
 	Username     string `gorm:"uniqueIndex;not null"`
 	Email        string `gorm:"uniqueIndex;not null"`

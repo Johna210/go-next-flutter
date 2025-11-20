@@ -4,14 +4,13 @@ import (
 	"go.uber.org/fx"
 
 	"github.com/johna210/go-next-flutter/internal/core"
-	"github.com/johna210/go-next-flutter/internal/modules/auth/domain/entity"
 )
 
 var Module = fx.Module("auth",
 	// Provide entity provider
 	fx.Provide(
 		fx.Annotate(
-			entity.NewEntityProvider,
+			NewEntityProvider,
 			fx.As(new(core.EntityProvider)),
 		),
 	),

@@ -9,7 +9,7 @@ import (
 )
 
 type Session struct {
-	model.BaseModel
+	model.BaseModel `gorm:"embedded"`
 
 	UserID       uuid.UUID `gorm:"type:uuid;not null;index"`
 	JWTID        uuid.UUID `gorm:"type:uuid;not null;uniqueIndex"`

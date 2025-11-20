@@ -13,6 +13,12 @@ import (
 	"github.com/johna210/go-next-flutter/pkg/utils"
 )
 
+const (
+	DBTypePostgres   = "postgres"
+	DBTypePostgresql = "postgresql"
+	DBTypeMySQL      = "mysql"
+)
+
 func NewConfig() (*Config, error) {
 	// 1. Load .env file into actual environment variables
 	if err := godotenv.Load(); err != nil {
@@ -134,9 +140,9 @@ func (c *Config) IsLocal() bool {
 
 func (c *Config) GetDatabaseUrl() string {
 	switch c.Database.Type {
-	case "postgres", "postgresql":
-		return c.getPostgreSQLURL()
-	case "mysql":
+	case DBTypePostgres, DBTypePostgresql:
+		return strings.TrimSpace(c.getPostgreSQLURL())
+	case DBTypeMySQL:
 		return c.getMySQLURL()
 	default:
 		return c.getPostgreSQLURL()
@@ -164,8 +170,10 @@ func (c *Config) GetAddr() string {
 
 func (c *Config) getPostgreSQLURL() string {
 	encodedPassword := url.QueryEscape(c.Database.Password)
+	encodedUser := url.QueryEscape(c.Database.User)
+
 	return fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=%s",
-		c.Database.User, encodedPassword, c.Database.Host,
+		encodedUser, encodedPassword, c.Database.Host,
 		c.Database.Port, c.Database.DBName, c.Database.SSLMode)
 }
 
