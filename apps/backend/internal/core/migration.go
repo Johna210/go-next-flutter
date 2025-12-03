@@ -74,7 +74,7 @@ func (m *Migrator) GenerateMigration(migrationName, moduleFilter string) error {
 	m.log.Info("Env: ", String("env", env))
 
 	// Schema file
-	schemaFile := "migrations/.atlas_schema.hcl"
+	schemaFile := "schema/schema.sql"
 
 	file, err := os.Create(schemaFile)
 	if err != nil {
@@ -94,14 +94,18 @@ func (m *Migrator) GenerateMigration(migrationName, moduleFilter string) error {
 		return err
 	}
 
+	m.log.Info("Schema file created", String("schema_file", schemaFile))
+	m.log.Info("Migration name", String("migration_name", migrationName))
+
 	// nolint:gosec // G204: Arguments are derived from validated application configuration, not untrusted user input.
 	cmd := exec.Command("atlas", "migrate", "diff",
-		m.config.GetDatabaseUrl(),
-		"--to", "file://"+schemaFile,
+		migrationName,
+		"--to", fmt.Sprintf("file://%s", schemaFile),
 		"--dir", "file://migrations",
-		"--dev-url", "docker://postgres:latest",
-		"--", migrationName,
+		"--dev-url", "docker://postgres?search_path=public",
 	)
+
+	m.log.Debug("Atlas command", String("command", cmd.String()))
 
 	m.log.Info("Running Atlas migration generation",
 		String("migration_name", migrationName),
@@ -109,8 +113,8 @@ func (m *Migrator) GenerateMigration(migrationName, moduleFilter string) error {
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		m.log.Fatal("Migration generation failed", Error(err))
 		fmt.Println(string(output))
+		m.log.Fatal("Migration generation failed", Error(err))
 		return err
 	}
 
@@ -146,8 +150,9 @@ func (m *Migrator) ApplyMigrations() error {
 	cmd := exec.Command("atlas", "migrate", "apply",
 		"--dir", "file://migrations",
 		"--url", m.config.GetDatabaseUrl(),
-		"--env", m.config.App.Environment,
 	)
+
+	m.log.Debug(cmd.String())
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {

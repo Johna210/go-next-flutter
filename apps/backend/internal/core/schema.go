@@ -104,13 +104,6 @@ func (sm *SchemaManager) LoadGORMSchema(writer io.Writer, cfg *Config, db *Datab
 		return fmt.Errorf("no entities registered")
 	}
 
-	// Use the actual database connection to introspect schema
-	// Note: AutoMigrate will create tables/columns if they don't exist
-	// but won't delete existing ones - it's generally safe
-	if err := db.AutoMigrate(entities...); err != nil {
-		return fmt.Errorf("failed to analyze entities: %w", err)
-	}
-
 	var driverName string
 	switch cfg.Database.Type {
 	case "postgres", "postgresql":
@@ -123,8 +116,15 @@ func (sm *SchemaManager) LoadGORMSchema(writer io.Writer, cfg *Config, db *Datab
 
 	// Convert GORM schema to Atlas HCL format
 	// Pass the underlying gorm.DB (not the Database wrapper)
-	if _, err := gormschema.New(driverName).Load(db.DB, writer); err != nil {
+	stmts, err := gormschema.New(driverName).Load(entities...)
+	if err != nil {
 		return fmt.Errorf("failed to convert schema to Atlas format: %w", err)
+	}
+
+	stmts = fmt.Sprintf("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";\n%s", stmts)
+	_, err = writer.Write([]byte(stmts))
+	if err != nil {
+		return fmt.Errorf("failed to write schema to file: %w", err)
 	}
 
 	return nil

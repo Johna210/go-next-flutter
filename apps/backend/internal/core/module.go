@@ -48,7 +48,7 @@ func registerLifecycleHooks(
 			// }
 			// log.Info("Migrations applied successfully")
 
-			// log.Info("Core Module started successfully")
+			log.Info("Core Module started successfully")
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
