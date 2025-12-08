@@ -36,18 +36,6 @@ func registerLifecycleHooks(
 				return err
 			}
 
-			// RunMigrations - applies all migrations on startup
-			// log.Info("Applying database migrations...")
-			// log.Info("Managing",
-			// 	Int("entities", len(sm.GetAllEntities())),
-			// 	Int("modules", len(sm.ListModules())),
-			// )
-
-			// if err := m.applyMigrations(); err != nil {
-			// 	return fmt.Errorf("migration failed: %w", err)
-			// }
-			// log.Info("Migrations applied successfully")
-
 			log.Info("Core Module started successfully")
 			return nil
 		},
@@ -60,7 +48,7 @@ func registerLifecycleHooks(
 			}
 
 			// Sync logger last
-			return nil
+			return log.Sync()
 		},
 	})
 }

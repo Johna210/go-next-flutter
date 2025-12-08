@@ -146,18 +146,35 @@ func (m *Migrator) CheckStatus() {
 }
 
 func (m *Migrator) ApplyMigrations() error {
+	m.log.Info("Starting migration process...")
+	m.log.Info("Migration directory: file://migrations")
+	m.log.Info("Target database", String("url", m.config.GetDatabaseUrl()))
+
 	// nolint:gosec // G204: Arguments are derived from validated application configuration, not untrusted user input.
 	cmd := exec.Command("atlas", "migrate", "apply",
 		"--dir", "file://migrations",
 		"--url", m.config.GetDatabaseUrl(),
 	)
 
-	m.log.Debug(cmd.String())
-
 	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("atlas failed: %w, output: %s", err, string(output))
+	outputStr := string(output)
+
+	// Log each line of Atlas output to see migration details
+	if outputStr != "" {
+		m.log.Info("Atlas migration output:")
+		for _, line := range strings.Split(strings.TrimSpace(outputStr), "\n") {
+			if line != "" {
+				m.log.Info("  " + line)
+			}
+		}
 	}
+
+	if err != nil {
+		m.log.Error("Migration failed", Error(err))
+		return fmt.Errorf("atlas failed: %w, output: %s", err, outputStr)
+	}
+
+	m.log.Info("Migrations applied successfully!")
 	return nil
 }
 
