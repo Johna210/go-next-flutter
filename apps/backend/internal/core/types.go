@@ -22,6 +22,7 @@ type AppConfig struct {
 	Port        int    `mapstructure:"port"        validate:"required,gt=0,lte=65535"`
 	Debug       bool   `mapstructure:"debug"`
 }
+
 type DatabaseConfig struct {
 	Type            string        `mapstructure:"type"              validate:"required,oneof=postgres postgresql mysql sqlserver"`
 	Host            string        `mapstructure:"host"              validate:"required,hostname|ip"`
@@ -34,6 +35,7 @@ type DatabaseConfig struct {
 	MaxIdleConns    int           `mapstructure:"max_idle_conns"    validate:"gt=0"`
 	ConnMaxLifetime time.Duration `mapstructure:"conn_max_lifetime" validate:"gt=0"`
 }
+
 type CacheConfig struct {
 	Enabled  bool   `mapstructure:"enabled"`
 	Host     string `mapstructure:"host"      validate:"required_if=Enabled true,hostname|ip"`
@@ -42,12 +44,14 @@ type CacheConfig struct {
 	DB       int    `mapstructure:"db"        validate:"gte=0"`
 	PoolSize int    `mapstructure:"pool_size" validate:"required_if=Enabled true,gt=0"`
 }
+
 type LoggerConfig struct {
 	Level            string   `mapstructure:"level"              validate:"required,oneof=debug info warn error"`
 	Encoding         string   `mapstructure:"encoding"           validate:"required,oneof=json console"`
 	OutputPaths      []string `mapstructure:"output_paths"`
 	ErrorOutputPaths []string `mapstructure:"error_output_paths"`
 }
+
 type ServerConfig struct {
 	ReadTimeout     time.Duration `mapstructure:"read_timeout"     validate:"gt=0"`
 	WriteTimeout    time.Duration `mapstructure:"write_timeout"    validate:"gt=0"`
@@ -74,10 +78,4 @@ type Cache interface {
 	Expire(ctx context.Context, key string, expiration time.Duration) error
 	Health(ctx context.Context) error
 	Close() error
-}
-
-type Infrastructure struct {
-	Config *Config
-	Logger Logger
-	Cache  Cache
 }
