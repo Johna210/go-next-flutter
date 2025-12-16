@@ -13,7 +13,7 @@ type Application struct {
 
 func NewApp() *Application {
 	app := fx.New(
-		// Core module includes (database, logger, cache, migrations)
+		// Core Module (DB, Logger, Migrator, Schema)
 		core.Module,
 
 		// Application modules (auth etc..)

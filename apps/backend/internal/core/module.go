@@ -35,6 +35,11 @@ func registerLifecycleHooks(
 			if err := db.Health(ctx); err != nil {
 				return err
 			}
+			// Run Migrations
+			log.Info("Running migrations")
+			if err := m.ApplyMigrations(); err != nil {
+				return err
+			}
 
 			log.Info("Core Module started successfully")
 			return nil
