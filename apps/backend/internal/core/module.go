@@ -13,6 +13,7 @@ var Module = fx.Module("core",
 		NewDatabase,
 		NewSchemaManager,
 		NewMigrator,
+		NewCache,
 	),
 	fx.Invoke(registerLifecycleHooks),
 )
@@ -24,6 +25,7 @@ func registerLifecycleHooks(
 	db *Database,
 	sm *SchemaManager,
 	m *Migrator,
+	cache Cache,
 ) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
@@ -46,16 +48,23 @@ func registerLifecycleHooks(
 		},
 		OnStop: func(ctx context.Context) error {
 			log.Info("Shutting down core module")
+			var shutdownErr error
 
 			// Close Connections
 			if err := db.Close(); err != nil {
 				log.Error("Failed to close database", Error(err))
+				shutdownErr = err
+			}
+
+			if err := cache.Close(); err != nil {
+				log.Error("Failed to close cache", Error(err))
+				shutdownErr = err
 			}
 
 			// Sync logger last
 			_ = log.Sync()
 
-			return nil
+			return shutdownErr
 		},
 	})
 }

@@ -42,7 +42,43 @@ func (r *RedisCache) Close() error {
 	return r.client.Close()
 }
 
-func NewRedisCache(cfg *Config, log Logger) (Cache, error) {
+// NoOpCache is a cache implementation that does nothing
+type NoOpCache struct{}
+
+func (n *NoOpCache) Get(ctx context.Context, key string) (string, error) {
+	return "", redis.Nil
+}
+
+func (n *NoOpCache) Set(ctx context.Context, key string, value any, expiration time.Duration) error {
+	return nil
+}
+
+func (n *NoOpCache) Delete(ctx context.Context, keys ...string) error {
+	return nil
+}
+
+func (n *NoOpCache) Exists(ctx context.Context, keys ...string) (int64, error) {
+	return 0, nil
+}
+
+func (n *NoOpCache) Expire(ctx context.Context, key string, expiration time.Duration) error {
+	return nil
+}
+
+func (n *NoOpCache) Health(ctx context.Context) error {
+	return nil
+}
+
+func (n *NoOpCache) Close() error {
+	return nil
+}
+
+func NewCache(cfg *Config, log Logger) (Cache, error) {
+	if !cfg.Cache.Enabled {
+		log.Info("Cache is disabled, using NoOpCache")
+		return &NoOpCache{}, nil
+	}
+
 	opts := &redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", cfg.Cache.Host, cfg.Cache.Port),
 		Password: cfg.Cache.Password,
