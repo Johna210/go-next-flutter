@@ -53,7 +53,9 @@ func registerLifecycleHooks(
 			}
 
 			// Sync logger last
-			return log.Sync()
+			_ = log.Sync()
+
+			return nil
 		},
 	})
 }

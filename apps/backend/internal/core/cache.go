@@ -18,7 +18,7 @@ func (r *RedisCache) Get(ctx context.Context, key string) (string, error) {
 	return val, err
 }
 
-func (r *RedisCache) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) error {
+func (r *RedisCache) Set(ctx context.Context, key string, value any, expiration time.Duration) error {
 	return r.client.Set(ctx, key, value, expiration).Err()
 }
 
